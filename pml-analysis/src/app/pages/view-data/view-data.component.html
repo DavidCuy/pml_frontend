@@ -1,0 +1,162 @@
+<div class="container-fluid">
+    <app-navigation [title]="pageTitle" [breadcrumb]="breadcrumb"></app-navigation>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Resultados</h4>
+                    <p class="card-blockquote">Se encontraron <b>{{ data.total | number }}</b> resultados de <b>{{ data.nodes?.length | number }}</b> nodos distintos</p>
+
+                    <h4 class="card-title">Filtrado</h4>
+                    <div class="row mt-2">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="system">Sistema</label>
+                                <select [(ngModel)]="systemFilter" (ngModelChange)="filterChange()" name="sistema" class="form-control" (change)="filterChange()">
+                                <option [value]="'SIN'">SIN</option>
+                                <option [value]="'BCA'">BCA</option>
+                                <option [value]="'BCS'">BCS</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="region">Control regional</label>
+                                <input [(ngModel)]="regionFilter" (ngModelChange)="filterChange()" type="text" class="form-control" name="region" placeholder="Agregue texto a filtrar...">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="charge">Zona de carga</label>
+                                <input [(ngModel)]="chargeFilter" (ngModelChange)="filterChange()" type="text" class="form-control" name="charge" placeholder="Agregue texto a filtrar...">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="transmition">Zona de transmisión</label>
+                                <input [(ngModel)]="transmitionFilter" (ngModelChange)="filterChange()" type="text" class="form-control" name="transmition" placeholder="Agregue texto a filtrar...">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="distribution">Zona de distribución</label>
+                                <input [(ngModel)]="distributionFilter" (ngModelChange)="filterChange()" type="text" class="form-control" name="distribution" placeholder="Agregue texto a filtrar...">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="state">Estado</label>
+                                <input [(ngModel)]="stateFilter" (ngModelChange)="filterChange()" type="text" class="form-control" name="state" placeholder="Agregue texto a filtrar...">
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label for="city">Municipio</label>
+                                <input [(ngModel)]="cityFilter" (ngModelChange)="filterChange()" type="text" class="form-control" name="city" placeholder="Agregue texto a filtrar...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-5">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <cdk-virtual-scroll-viewport itemSize="75" style="height: 450px" class="custom-scrollbar">
+                <div class="card">
+                    <div>
+                        <div class="list-group">
+                            <a *cdkVirtualFor="let node of showNodes; let i = index" href="javascript:void(0)" class="list-group-item" [ngClass]="{'active': data.resume[i].active}" (click)="selectedNode(node, data.resume[i])">
+                              [{{ node.str_CLAVE }}] {{ node.str_NOMBRE }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+
+        <div class="col-lg-9 col-md-8 col-sm-12">
+            <div class="card" style="height: 450px">
+                <div class="loader-login animated fadeIn fast" *ngIf="showFormLoader">
+                    <div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="proccess">Proceso</label>
+                                <select [(ngModel)]="proccess" name="proceso" class="form-control" (ngModelChange)="filterTableDate()">
+                          <option [value]="'MDA'">MDA</option>
+                          <option [value]="'MTR'">MTR</option>
+                      </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Rango de fechas</label>
+                                <div class="input-daterange input-group" id="date-range">
+                                    <input [(ngModel)]="beginDate_str" (ngModelChange)="filterTableDate()" id="beginDate" type="text" class="form-control" name="beginDate" />
+                                    <span class="input-group-addon bg-info b-0 text-white">hasta</span>
+                                    <input [(ngModel)]="endDate_str" (ngModelChange)="filterTableDate()" id="endDate" type="text" class="form-control" name="endDate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 8px">
+                        <div class="col-12">
+                            <div>
+                                <div>
+                                    <div class="fixed-header table-responsive">
+                                        <cdk-virtual-scroll-viewport #scrollViewport itemSize="50" style="height: 280px" class="custom-scrollbar">
+                                            <table class="display nowrap table table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th [style.top]="inverseOfTranslation">Fecha</th>
+                                                        <th [style.top]="inverseOfTranslation">Hora</th>
+                                                        <th [style.top]="inverseOfTranslation">Proceso</th>
+                                                        <th [style.top]="inverseOfTranslation">pml</th>
+                                                        <th [style.top]="inverseOfTranslation">pml_ene</th>
+                                                        <th [style.top]="inverseOfTranslation">pml_per</th>
+                                                        <th [style.top]="inverseOfTranslation">pml_cng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *cdkVirtualFor="let data of showTableData">
+                                                        <td>{{ data.fecha | date : 'yyyy-MM-dd' }}</td>
+                                                        <td>{{ data.hora }}</td>
+                                                        <td>{{ data.proceso }}</td>
+                                                        <td>{{ data.pml }}</td>
+                                                        <td>{{ data.pml_ene }}</td>
+                                                        <td>{{ data.pml_per }}</td>
+                                                        <td>{{ data.pml_cng }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </cdk-virtual-scroll-viewport>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <button class="btn btn-primary btn-block" (click)="exportData()">Exportar <i class="fa fa-file-excel-o"></i></button>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <p class="float-right">Se encontraron {{ showTableData.length }} resultados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

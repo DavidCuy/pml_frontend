@@ -1,0 +1,138 @@
+<div class="container-fluid">
+    <app-navigation [title]="pageTitle" [breadcrumb]="breadcrumb"></app-navigation>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Nodos M</h4>
+                    <form ngNativeValidate [formGroup]="form" (submit)="sendRequest()">
+                        <div class="row mt-2">
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label for="proccess">Proceso</label>
+                                    <select formControlName="proccess" name="proceso" class="form-control">
+                                    <option [value]="'MDA'">MDA</option>
+                                    <option [value]="'MTR'">MTR</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label for="estado">Estados</label>
+                                    <select formControlName="state" (change)="selectedStateChange()" name="estado" class="form-control">
+                                    <option [value]="state.id" *ngFor="let state of states">{{ state.Nombre }}</option>
+                                  </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label for="municipio">Municipio</label>
+                                    <select formControlName="town" name="municipio" class="form-control">
+                                    <option [value]="town.Inegi_id" *ngFor="let town of towns">{{ town.Nombre }}</option>
+                                  </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 col-sm-12">
+                                <div class="form-group">
+                                    <label>Rango de fechas</label>
+                                    <div class="input-daterange input-group" id="date-range">
+                                        <input formControlName="beginDate" id="beginDate" type="text" class="form-control" name="beginDate" autocomplete="off" />
+                                        <span class="input-group-addon bg-info b-0 text-white">hasta</span>
+                                        <input formControlName="endDate" id="endDate" type="text" class="form-control" name="endDate" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label></label>
+                                    <button [disabled]="form.invalid" type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i>Consulta</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-t-5">
+        <div class="col-lg-12 col-sm-12">
+            <div class="card" style="height: 450px">
+                <div class="loader-login animated fadeIn fast" *ngIf="showFormLoader">
+                    <div class="lds-ring">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="card-title">Promedio</h4>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <b>PML: </b> <b><i>{{ avg_pml | number: '1.2-2' }}</i></b>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <b>PML ENE: </b> <b><i>{{ avg_pml_ene | number: '1.2-2' }}</i></b>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <b>PML PER: </b> <b><i>{{ avg_pml_per | number: '1.2-2' }}</i></b>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <b>PML CNG: </b> <b><i>{{ avg_pml_cng | number: '1.2-2' }}</i></b>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom: 8px">
+                        <div class="col-12">
+                            <div>
+                                <div>
+                                    <div class="fixed-header table-responsive">
+                                        <cdk-virtual-scroll-viewport #scrollViewport itemSize="50" style="height: 280px" class="custom-scrollbar">
+                                            <table class="display nowrap table table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th [style.top]="inverseOfTranslation">Fecha</th>
+                                                        <th [style.top]="inverseOfTranslation">Hora</th>
+                                                        <th [style.top]="inverseOfTranslation">pml</th>
+                                                        <th [style.top]="inverseOfTranslation">pml_ene</th>
+                                                        <th [style.top]="inverseOfTranslation">pml_per</th>
+                                                        <th [style.top]="inverseOfTranslation">pml_cng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *cdkVirtualFor="let data of showTableData">
+                                                        <td>{{ data.fecha }}</td>
+                                                        <td>{{ data.hora }}</td>
+                                                        <td>{{ data.pml | number : '1.2-2' }}</td>
+                                                        <td>{{ data.pml_ene | number : '1.2-2' }}</td>
+                                                        <td>{{ data.pml_per | number : '1.2-2' }}</td>
+                                                        <td>{{ data.pml_cng | number : '1.2-2' }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </cdk-virtual-scroll-viewport>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <button class="btn btn-primary btn-block" (click)="exportData()">Exportar <i class="fa fa-file-excel-o"></i></button>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <p class="float-right">Se encontraron {{ showTableData.length }} resultados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

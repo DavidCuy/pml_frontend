@@ -1,0 +1,47 @@
+<!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li class="nav-devider"></li>
+                <li class="nav-small-cap">SECCIONES</li>
+                <li [routerLink]="['/descarga']" routerLinkActive="active">
+                    <a class="waves-effect waves-dark" aria-expanded="false">
+                        <i class="mdi mdi-download"></i>
+                        <span class="hide-menu">Descarga
+                        </span>
+                    </a>
+                </li>
+                <li [routerLink]="['/visualizar']" routerLinkActive="active">
+                    <a class="waves-effect waves-dark" aria-expanded="false">
+                        <i class="mdi mdi-eye"></i><span class="hide-menu">Visualizar</span>
+                    </a>
+                </li>
+                <li [routerLink]="['/exportar']" routerLinkActive="active">
+                    <a class="waves-effect waves-dark" aria-expanded="false">
+                        <i class="mdi mdi-cloud-upload"></i><span class="hide-menu">Exportar</span>
+                    </a>
+                </li>
+                <li [routerLink]="['/nodos']" routerLinkActive="active">
+                    <a class="waves-effect waves-dark" aria-expanded="false">
+                        <i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Nodos</span>
+                    </a>
+                </li>
+                <li [routerLink]="['/errorLog']" routerLinkActive="active">
+                    <a class="waves-effect waves-dark" aria-expanded="false">
+                        <i class="mdi mdi-clipboard-alert"></i><span class="hide-menu">Log de errores</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->

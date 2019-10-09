@@ -1,0 +1,82 @@
+<div class="container-fluid">
+    <app-navigation [title]="pageTitle" [breadcrumb]="breadcrumb"></app-navigation>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Búsqueda</h4>
+                    <form ngNativeValidate [formGroup]="form" (submit)="sendRequest()">
+                        <div class="row mt-2">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Rango de fechas</label>
+                                    <div class="input-daterange input-group" id="date-range">
+                                        <input id="beginDate" type="text" class="form-control" name="beginDate" formControlName="beginDate" />
+                                        <span class="input-group-addon bg-info b-0 text-white">hasta</span>
+                                        <input id="endDate" type="text" class="form-control" name="endDate" formControlName="endDate" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Acceso rápido</label>
+                                    <div class="btn-group" style="display: block">
+                                        <button class="btn btn-secondary btn-rounded" (click)="setRangeDate('week')">Última semana</button>
+                                        <button class="btn btn-secondary btn-rounded" (click)="setRangeDate('month')">Último mes</button>
+                                        <button class="btn btn-secondary btn-rounded" (click)="setRangeDate('year')">Último año</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <button class="btn btn-primary btn-block" [disabled]="form.invalid">Descargar información</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title float-left">Log de errores</h4>
+                    <div class="table-responsive m-t-40">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display nowrap table table-hover table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Fecha de peticion</th>
+                                    <th>Descripción</th>
+                                    <th>Información extra</th>
+                                    <th>Sistema</th>
+                                    <th>Proceso</th>
+                                    <th>Nodos</th>
+                                    <th>Fecha de creación</th>
+                                    <th>Resuelto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let error of errorLog">
+                                    <td>{{ error.date_FECHA_PETICION | date:'yyyy-MM-dd' }}</td>
+                                    <td>{{ error.str_description }}</td>
+                                    <td>{{ error.str_extraInfo }}</td>
+                                    <td>{{ error.str_SISTEMA }}</td>
+                                    <td>{{ error.str_PROCESO }}</td>
+                                    <td>
+                                        <div *ngFor="let clave of error.ser_CLAVES">{{ clave }}</div>
+                                    </td>
+                                    <td>{{ error.created_at }}</td>
+                                    <td>{{ error.bool_resuelto }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

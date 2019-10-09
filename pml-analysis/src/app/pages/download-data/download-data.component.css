@@ -1,0 +1,32 @@
+.tag-container {
+    height: 175px;
+    overflow-y: scroll;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    padding: 8px
+}
+
+.badge a {
+    color: #bbb;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.badge a:hover {
+    opacity: 1.0
+}
+
+.badge .remove {
+    vertical-align: bottom;
+    top: 0;
+}
+
+.badge a {
+    margin: 0 0 0 .3em;
+}
+
+.badge i {
+    color: #fff;
+    margin-bottom: 2px;
+}

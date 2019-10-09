@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <app-navigation [title]="pageTitle" [breadcrumb]="breadcrumb"></app-navigation>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <h4 class="card-title float-left">Tabla de nodos</h4>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <button class="btn btn-primary float-right"><i class="mdi mdi-update"></i>&nbsp; Actualizar</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive m-t-40">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display nowrap table table-hover table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>CLAVE</th>
+                                    <th>Sistema</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Municio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let node of nodes">
+                                    <td>{{ node.str_CLAVE }}</td>
+                                    <td>{{ node.str_SISTEMA }}</td>
+                                    <td>{{ node.str_NOMBRE }}</td>
+                                    <td>{{ node.str_INEGI_ENTIDAD_FEDERATIVA }}</td>
+                                    <td>{{ node.str_INEGI_MUNICIPIO }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

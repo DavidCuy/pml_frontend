@@ -1,0 +1,99 @@
+<div class="container-fluid">
+    <app-navigation [title]="pageTitle" [breadcrumb]="breadcrumb"></app-navigation>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Búsqueda</h4>
+                    <form ngNativeValidate [formGroup]="form" (submit)="sendRequest()">
+                        <div class="row mt-2">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="form-group">
+                                    <label for="system">Sistema</label>
+                                    <select formControlName="system" name="sistema" class="form-control" (change)="systemChange()">
+                                      <option [value]="'SIN'">SIN</option>
+                                      <option [value]="'BCA'">BCA</option>
+                                      <option [value]="'BCS'">BCS</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="form-group">
+                                    <label for="proccess">Proceso</label>
+                                    <select formControlName="proccess" name="proceso" class="form-control">
+                                        <option [value]="'MDA'">MDA</option>
+                                        <option [value]="'MTR'">MTR</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Rango de fechas</label>
+                                    <div class="input-daterange input-group" id="date-range">
+                                        <input id="beginDate" type="text" class="form-control" name="beginDate" formControlName="beginDate" autocomplete="off" />
+                                        <span class="input-group-addon bg-info b-0 text-white">hasta</span>
+                                        <input id="endDate" type="text" class="form-control" name="endDate" formControlName="endDate" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                <div class="form-group">
+                                    <label>Filtros</label>
+                                    <div class="form-check" *ngFor="let filter of filters">
+                                        <input formControlName="filter_selected" [id]="filter.value + '_radio'" class="form-check-input" type="radio" [value]="filter.value">
+                                        <label class="form-check-label" [for]="filter.value + '_radio'">
+                                          {{ filter.name }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-sm-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Nodos</label>
+                                            <input type="text" class="form-control" placeholder="Filtrar..." (input)="filterSearch($event.target.value)">
+                                            <select id="public-methods" class="form-control mt-2" multiple name="nodes[]" (dblclick)="addSelectedNode($event.target.value)">
+                                              <option *ngFor="let node of showNodes" [value]="node.str_CLAVE">
+                                                [{{ node.str_CLAVE }}] - {{ node.str_NOMBRE }}
+                                              </option>
+                                          </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="tag-container">
+                                            <div *ngFor="let node of selectedNodes">
+                                                <span class="badge badge-info">
+                                                    <span>[{{ node.str_CLAVE }}] - {{ node.str_NOMBRE }}</span>
+                                                <a (click)="removeSelectedNode(node.str_CLAVE)"><i class="remove fa fa-times-circle"></i></a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-6 col-sm-12">
+                                        <button type="button" class="btn btn-block btn-info" (click)="addAllNodes()">Agregar todos</button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <button type="button" class="btn btn-block btn-secondary" (click)="removeAllNodes()">Quitar todos</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <button class="btn btn-primary btn-block" [disabled]="form.invalid || selectedNodes.length === 0">Descargar información</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

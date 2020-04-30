@@ -28,7 +28,7 @@
     "datatables.net": "^1.10.19",
     "datatables.net-dt": "^1.10.19",
     "file-saver": "^2.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "observable-webworker": "^3.2.3",
     "rxjs": "~6.4.0",
     "sweetalert2": "^8.17.1",
